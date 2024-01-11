@@ -25,8 +25,9 @@ public class ENRelativeDateFormatParser: Parser {
         let (matchText, index) = matchTextAndIndex(from: text, andMatchResult: match)
         var result = ParsedResult(ref: ref, index: index, text: matchText)
 
-        let modifier = match.isNotEmpty(atRangeIndex: modifierWordGroup) && NSRegularExpression.isMatch(forPattern: "^next", in: match.string(from: text, atRangeIndex: modifierWordGroup).lowercased()) ? 1 : -1
-        result.tags[.enRelativeDateFormatParser] = true
+        let modifier = match.isNotEmpty(atRangeIndex: modifierWordGroup) && 
+               (NSRegularExpression.isMatch(forPattern: "^last|^past", in: match.string(from: text, atRangeIndex: modifierWordGroup).lowercased()) ? -1 : 1)
+result.tags[.enRelativeDateFormatParser] = true
 
         var number: Int
         let numberText = match.isNotEmpty(atRangeIndex: multiplierWordGroup) ? match.string(from: text, atRangeIndex: multiplierWordGroup).lowercased() : ""
